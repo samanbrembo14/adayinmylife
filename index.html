@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>A Day In My Life</title>
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --primary-hover: #3a56d4;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --success-color: #4ade80;
+      --danger-color: #f87171;
+      --warning-color: #fbbf24;
+      --dark-color: #1e293b;
+      --light-color: #f8fafc;
+      --gray-color: #94a3b8;
+      --border-radius: 8px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--dark-color);
+      background-color: #f0f4f8;
+      background-image: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-md);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--gray-color);
+      font-size: 1.1rem;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      gap: 1rem;
+    }
+
+    .tab-btn {
+      padding: 0.8rem 1.5rem;
+      background-color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-color);
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      color: var(--primary-color);
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      background: white;
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-md);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Todo List Styles */
+    .input-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-section input[type="text"] {
+      flex: 1 1 auto;
+      min-width: 200px;
+      padding: 0.8rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--border-radius);
+      outline: none;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .input-section input[type="text"]:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .input-section select {
+      padding: 0.8rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--border-radius);
+      outline: none;
+      font-size: 1rem;
+      transition: var(--transition);
+      background-color: white;
+    }
+
+    .input-section select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-delete {
+      background-color: var(--danger-color);
+      border: none;
+      padding: 0.4rem 0.8rem;
+      color: white;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.85rem;
+    }
+
+    .btn-delete:hover {
+      background-color: #ef4444;
+      transform: translateY(-1px);
+    }
+
+    .day-section-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: flex-start;
+    }
+
+    .day-section {
+      flex: 1 0 calc(33.33% - 1rem);
+      min-width: 250px;
+      background: #ffffff;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      border: 1px solid #e2e8f0;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .day-section:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+
+    .day-section h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      background-color: #f8fafc;
+      padding: 0.8rem;
+      border-radius: var(--border-radius);
+      font-size: 1.2rem;
+      text-align: center;
+      color: var(--secondary-color);
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #fff;
+      margin-bottom: 8px;
+      padding: 12px 15px;
+      border-radius: var(--border-radius);
+      border: 1px solid #e2e8f0;
+      transition: var(--transition);
+    }
+
+    li:hover {
+      background-color: #f8fafc;
+    }
+
+    li.completed .task-text {
+      text-decoration: line-through;
+      color: var(--gray-color);
+    }
+
+    .task-text {
+      flex: 1;
+      margin-left: 10px;
+    }
+
+    /* Kalkulator Styles */
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark-color);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--border-radius);
+      outline: none;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .output-section {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border: 1px dashed #e2e8f0;
+      border-radius: var(--border-radius);
+      background: #f8fafc;
+      min-height: 60px;
+    }
+
+    .output-section h3 {
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+      color: var(--secondary-color);
+    }
+
+    /* Validasi Form Styles */
+    .text-red-500 {
+      color: var(--danger-color);
+    }
+
+    .text-green-500 {
+      color: var(--success-color);
+    }
+
+    .error {
+      color: var(--danger-color);
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .success {
+      color: var(--success-color);
+      font-weight: 600;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .day-section {
+        flex: 1 0 calc(50% - 1rem);
+      }
+      
+      .tabs {
+        flex-wrap: wrap;
+      }
+      
+      .btn-group {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .day-section {
+        flex: 1 0 100%;
+      }
+      
+      .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 0.8rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>A Day In My Life </h1>
+      <p>To-Do List, Kalkulator & Validasi Form</p>
+    </header>
+    
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="todo">To-Do List</button>
+      <button class="tab-btn" data-tab="calculator">Kalkulator</button>
+      <button class="tab-btn" data-tab="form">Validasi Form</button>
+    </div>
+    
+    <!-- To-Do List Tab -->
+    <div id="todo" class="tab-content active">
+      <h2>To-Do List</h2>
+      
+      <div class="input-section">
+        <input type="text" id="taskInput" placeholder="Tambah tugas baru..." />
+        <select id="daySelect">
+          <option value="Senin">Senin</option>
+          <option value="Selasa">Selasa</option>
+          <option value="Rabu">Rabu</option>
+          <option value="Kamis">Kamis</option>
+          <option value="Jumat">Jumat</option>
+          <option value="Sabtu">Sabtu</option>
+          <option value="Minggu">Minggu</option>
+        </select>
+        <button id="addBtn" class="btn">Tambah</button>
+      </div>
+      
+      <div id="dayContainer" class="day-section-grid"></div>
+    </div>
+    
+    <!-- Kalkulator Tab -->
+    <div id="calculator" class="tab-content">
+      <h2>Kalkulator Sederhana</h2>
+      
+      <div class="sapa-section">
+        <h3>Sapa Nama</h3>
+        <div class="form-group">
+          <label for="nama-input">Masukkan Nama Anda:</label>
+          <input type="text" id="nama-input" placeholder="Nama lengkap...">
+        </div>
+        <button id="sapa-button" class="btn">Sapa</button>
+    
+        <div class="output-section">
+          <div id="sapa-output"></div>
+        </div>
+      </div>
+      
+      <div class="kalkulator-section" style="margin-top: 2rem;">
+        <h3>Operasi Matematika</h3>
+        <div class="form-group">
+          <label for="angka1">Angka Pertama:</label>
+          <input type="number" id="angka1" placeholder="Masukkan angka 1" />
+        </div>
+        <div class="form-group">
+          <label for="angka2">Angka Kedua (tidak dipakai untuk akar):</label>
+          <input type="number" id="angka2" placeholder="Masukkan angka 2" />
+        </div>
+    
+        <div class="btn-group">
+          <button id="btn-tambah" class="btn">Tambah</button>
+          <button id="btn-kurang" class="btn">Kurang</button>
+          <button id="btn-kali" class="btn">Kali</button>
+          <button id="btn-bagi" class="btn">Bagi</button>
+          <button id="btn-pangkat" class="btn">Pangkat</button>
+          <button id="btn-akar" class="btn">Akar Kuadrat</button>
+          <button id="btn-modulus" class="btn">Modulus</button>
+        </div>
+        <div class="output-section">
+          <div id="hasil-kalkulator"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Validasi Form Tab -->
+    <div id="form" class="tab-content">
+      <h2>Validasi Form</h2>
+      <div class="form-group">
+        <label for="nameInput">Nama</label>
+        <input type="text" id="nameInput" placeholder="Nama Anda (min. 4 karakter)" />
+      </div>
+      <div class="form-group">
+        <label for="emailInput">Email</label>
+        <input type="text" id="emailInput" placeholder="email@contoh.com" />
+      </div>
+      <div class="form-group">
+        <label for="passInput">Password</label>
+        <input type="password" id="passInput" placeholder="Minimal 8 karakter" />
+      </div>
+      <button id="submitBtn" class="btn">Submit</button>
+      <div id="result" class="output-section"></div>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching functionality
+    document.querySelectorAll('.tab-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all tabs and content
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Add active class to clicked tab and corresponding content
+        button.classList.add('active');
+        const tabId = button.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    /***************************
+     * TO-DO LIST FUNCTIONALITY
+     ***************************/
+    
+    // Array penampung semua item to-do.
+    let todos = [];
+
+    // Referensi elemen DOM
+    const taskInput = document.getElementById("taskInput");
+    const daySelect = document.getElementById("daySelect");
+    const addBtn = document.getElementById("addBtn");
+    const dayContainer = document.getElementById("dayContainer");
+
+    // Daftar hari yang akan ditampilkan secara urut
+    const daysOfWeek = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
+
+    // Ambil data dari localStorage saat halaman dimuat
+    window.addEventListener("DOMContentLoaded", () => {
+      const storedData = localStorage.getItem("todos");
+      if (storedData) {
+        todos = JSON.parse(storedData);
+      }
+      renderTodosByDay();
+    });
+
+    // Tambah item baru saat klik tombol atau tekan Enter
+    addBtn.addEventListener("click", addTodo);
+    taskInput.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+        addTodo();
+      }
+    });
+
+    // Fungsi untuk menambah to-do
+    function addTodo() {
+      const taskText = taskInput.value.trim();
+      const taskDay = daySelect.value; // dari dropdown
+      if (taskText !== "") {
+        const newTodo = {
+          id: Date.now(),
+          text: taskText,
+          day: taskDay,
+          completed: false
+        };
+        todos.push(newTodo);
+
+        // Kosongkan input
+        taskInput.value = "";
+
+        saveToLocalStorage();
+        renderTodosByDay();
+      }
+    }
+
+    // Fungsi menampilkan tasks per hari
+    function renderTodosByDay() {
+      // Bersihkan container
+      dayContainer.innerHTML = "";
+
+      daysOfWeek.forEach((hari) => {
+        // Ambil data todos untuk hari tertentu
+        const tasksForThisDay = todos.filter(todo => todo.day === hari);
+        if (tasksForThisDay.length === 0) {
+          return; // tidak buat section kalau kosong
+        }
+
+        // Buat "kartu" day-section
+        const section = document.createElement("div");
+        section.classList.add("day-section");
+
+        // Judul hari
+        const heading = document.createElement("h2");
+        heading.textContent = hari;
+        section.appendChild(heading);
+
+        // Buat daftar <ul>
+        const ul = document.createElement("ul");
+
+        tasksForThisDay.forEach((todo) => {
+          const li = document.createElement("li");
+          if (todo.completed) {
+            li.classList.add("completed");
+          }
+
+          // Checkbox
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = todo.completed;
+          checkbox.addEventListener("change", () => {
+            todo.completed = !todo.completed;
+            saveToLocalStorage();
+            renderTodosByDay();
+          });
+
+          // Span teks tugas
+          const span = document.createElement("span");
+          span.className = "task-text";
+          span.textContent = todo.text;
+
+          // Tombol hapus
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "btn-delete";
+          deleteBtn.textContent = "Hapus";
+          deleteBtn.addEventListener("click", () => {
+            // Hapus item dari array
+            todos = todos.filter(item => item.id !== todo.id);
+            saveToLocalStorage();
+            renderTodosByDay();
+          });
+
+          li.appendChild(checkbox);
+          li.appendChild(span);
+          li.appendChild(deleteBtn);
+          ul.appendChild(li);
+        });
+
+        section.appendChild(ul);
+        dayContainer.appendChild(section);
+      });
+    }
+
+    // Fungsi menyimpan data ke localStorage
+    function saveToLocalStorage() {
+      localStorage.setItem("todos", JSON.stringify(todos));
+    }
+
+    /***************************
+     * KALKULATOR FUNCTIONALITY
+     ***************************/
+    
+    /*************************************
+     * 1) Fungsi Sapa Nama
+     *************************************/
+    function sapaNama(nama) {
+      return `Halo, ${nama} :)) Selamat datang >_< !`;
+    }
+    
+    // Event handler tombol "Sapa"
+    document.getElementById("sapa-button").addEventListener("click", function() {
+      const nama = document.getElementById("nama-input").value;
+      const outputEl = document.getElementById("sapa-output");
+    
+      if (nama.trim() === "") {
+        outputEl.innerHTML = 
+          `<p class="text-red-500">Silakan masukkan nama Anda terlebih dahulu!</p>`;
+      } else {
+        const pesan = sapaNama(nama);
+        outputEl.innerHTML = 
+          `<p class="text-green-500">${pesan}</p>`;
+      }
+    });
+    
+    /*************************************
+     * 2) Fungsi Kalkulator (dengan tambahan pangkat, akar, dan modulus)
+     *************************************/
+    function hitungKalkulator(angka1, angka2, operasi) {
+      let hasil = 0;
+      switch (operasi) {
+        case "tambah":
+          hasil = angka1 + angka2;
+          break;
+        case "kurang":
+          hasil = angka1 - angka2;
+          break;
+        case "kali":
+          hasil = angka1 * angka2;
+          break;
+        case "bagi":
+          if (angka2 === 0) {
+            return "Error: Pembagian dengan nol tidak diperbolehkan";
+          }
+          hasil = angka1 / angka2;
+          break;
+        case "pangkat":
+          // pangkat: angka1 ^ angka2
+          hasil = Math.pow(angka1, angka2);
+          break;
+        case "akar":
+          // akar kuadrat, hanya pakai angka1
+          if (angka1 < 0) {
+            return "Error: Tidak bisa mengambil akar dari bilangan negatif";
+          }
+          hasil = Math.sqrt(angka1);
+          break;
+        case "modulus":
+          // modulus: angka1 % angka2
+          hasil = angka1 % angka2;
+          break;
+        default:
+          return "Operasi tidak valid";
+      }
+      return hasil;
+    }
+    
+    // Fungsi bantu menampilkan hasil atau error
+    function tampilkanHasil(hasil, operasi) {
+      const hasilKalkulatorEl = document.getElementById("hasil-kalkulator");
+      if (typeof hasil === "string" && hasil.startsWith("Error")) {
+        // Jika hasil adalah string error
+        hasilKalkulatorEl.innerHTML = `<p class="text-red-500">${hasil}</p>`;
+      } else {
+        // Jika hasil numerik atau valid
+        hasilKalkulatorEl.innerHTML = `<p>${operasi}: ${hasil}</p>`;
+      }
+    }
+    
+    // 2a) Event handler tombol TAMBAH
+    document.getElementById("btn-tambah").addEventListener("click", function() {
+      const angka1 = parseFloat(document.getElementById("angka1").value);
+      const angka2 = parseFloat(document.getElementById("angka2").value);
+    
+      if (isNaN(angka1) || isNaN(angka2)) {
+        document.getElementById("hasil-kalkulator").innerHTML = 
+          `<p class="text-red-500">Masukkan angka yang valid!</p>`;
+      } else {
+        const hasil = hitungKalkulator(angka1, angka2, "tambah");
+        // Tampilkan dengan fungsi bantu
+        tampilkanHasil(`${angka1} + ${angka2} = ${hasil}`, "Penjumlahan");
+      }
+    });
+    
+    // 2b) Event handler tombol KURANG
+    document.getElementById("btn-kurang").addEventListener("click", function() {
+      const angka1 = parseFloat(document.getElementById("angka1").value);
+      const angka2 = parseFloat(document.getElementById("angka2").value);
+    
+      if (isNaN(angka1) || isNaN(angka2)) {
+        document.getElementById("hasil-kalkulator").innerHTML =
+          `<p class="text-red-500">Masukkan angka yang valid!</p>`;
+      } else {
+        const hasil = hitungKalkulator(angka1, angka2, "kurang");
+        tampilkanHasil(`${angka1} - ${angka2} = ${hasil}`, "Pengurangan");
+      }
+    });
+    
+    // 2c) Event handler tombol KALI
+    document.getElementById("btn-kali").addEventListener("click", function() {
+      const angka1 = parseFloat(document.getElementById("angka1").value);
+      const angka2 = parseFloat(document.getElementById("angka2").value);
+    
+      if (isNaN(angka1) || isNaN(angka2)) {
+        document.getElementById("hasil-kalkulator").innerHTML =
+          `<p class="text-red-500">Masukkan angka yang valid!</p>`;
+      } else {
+        const hasil = hitungKalkulator(angka1, angka2, "kali");
+        tampilkanHasil(`${angka1} × ${angka2} = ${hasil}`, "Perkalian");
+      }
+    });
+    
+    // 2d) Event handler tombol BAGI
+    document.getElementById("btn-bagi").addEventListener("click", function() {
+      const angka1 = parseFloat(document.getElementById("angka1").value);
+      const angka2 = parseFloat(document.getElementById("angka2").value);
+    
+      if (isNaN(angka1) || isNaN(angka2)) {
+        document.getElementById("hasil-kalkulator").innerHTML =
+          `<p class="text-red-500">Masukkan angka yang valid!</p>`;
+      } else {
+        const hasil = hitungKalkulator(angka1, angka2, "bagi");
+        if (typeof hasil === "string" && hasil.startsWith("Error")) {
+          // Error: pembagian dengan nol
+          document.getElementById("hasil-kalkulator").innerHTML = 
+            `<p class="text-red-500">${hasil}</p>`;
+        } else {
+          tampilkanHasil(`${angka1} ÷ ${angka2} = ${hasil}`, "Pembagian");
+        }
+      }
+    });
+    
+    // 2e) Event handler tombol PANGKAT
+    document.getElementById("btn-pangkat").addEventListener("click", function() {
+      const angka1 = parseFloat(document.getElementById("angka1").value);
+      const angka2 = parseFloat(document.getElementById("angka2").value);
+    
+      if (isNaN(angka1) || isNaN(angka2)) {
+        document.getElementById("hasil-kalkulator").innerHTML =
+          `<p class="text-red-500">Masukkan angka yang valid!</p>`;
+      } else {
+        const hasil = hitungKalkulator(angka1, angka2, "pangkat");
+        tampilkanHasil(`${angka1} ^ ${angka2} = ${hasil}`, "Pangkat");
+      }
+    });
+    
+    // 2f) Event handler tombol AKAR
+    document.getElementById("btn-akar").addEventListener("click", function() {
+      const angka1 = parseFloat(document.getElementById("angka1").value);
+      // Akar hanya butuh angka pertama
+      if (isNaN(angka1)) {
+        document.getElementById("hasil-kalkulator").innerHTML =
+          `<p class="text-red-500">Masukkan angka 1 yang valid (akar diambil dari Angka Pertama)!</p>`;
+      } else {
+        const hasil = hitungKalkulator(angka1, 0, "akar");
+        if (typeof hasil === "string" && hasil.startsWith("Error")) {
+          document.getElementById("hasil-kalkulator").innerHTML =
+            `<p class="text-red-500">${hasil}</p>`;
+        } else {
+          tampilkanHasil(`√${angka1} = ${hasil}`, "Akar Kuadrat");
+        }
+      }
+    });
+    
+    // 2g) Event handler tombol MODULUS
+    document.getElementById("btn-modulus").addEventListener("click", function() {
+      const angka1 = parseFloat(document.getElementById("angka1").value);
+      const angka2 = parseFloat(document.getElementById("angka2").value);
+    
+      if (isNaN(angka1) || isNaN(angka2)) {
+        document.getElementById("hasil-kalkulator").innerHTML =
+          `<p class="text-red-500">Masukkan angka yang valid!</p>`;
+      } else {
+        const hasil = hitungKalkulator(angka1, angka2, "modulus");
+        tampilkanHasil(`${angka1} mod ${angka2} = ${hasil}`, "Modulus");
+      }
+    });
+
+    /***************************
+     * VALIDASI FORM FUNCTIONALITY
+     ***************************/
+    
+    const nameInput = document.getElementById("nameInput");
+    const emailInput = document.getElementById("emailInput");
+    const passInput = document.getElementById("passInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const result = document.getElementById("result");
+    
+    function validasiForm(nama, email, password) {
+      const errors = [];
+      if (nama.trim().length < 4) errors.push("Nama harus lebih dari 3 karakter");
+      const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!regexEmail.test(email.trim())) errors.push("Email tidak valid");
+      if (password.length < 8) errors.push("Password minimal 8 karakter");
+      return errors;
+    }
+    
+    submitBtn.addEventListener("click", () => {
+      const errors = validasiForm(nameInput.value, emailInput.value, passInput.value);
+      if (errors.length > 0) {
+        result.innerHTML = errors.map(e => `<p class="error">${e}</p>`).join("");
+      } else {
+        result.innerHTML = `<p class="success">Semua input valid!</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
